@@ -5,7 +5,7 @@ signal hit
 @export var speed = 14
 @export var fall_acceleration = 75
 @export var jump_impulse = 20
-@export var bounce_impulse = 16
+@export var bounce_impulse = 30
 
 var target_velocity = Vector3.ZERO
 var bonus_points = 0
@@ -25,6 +25,9 @@ func _physics_process(delta: float) -> void:
 	if direction != Vector3.ZERO:
 		direction = direction.normalized()
 		$Pivot.basis = Basis.looking_at(direction)
+		$AnimationPlayer.speed_scale = 4
+	else:
+		$AnimationPlayer.speed_scale = 1
 		
 	target_velocity.x = direction.x * speed
 	target_velocity.z = direction.z * speed
@@ -55,14 +58,13 @@ func _physics_process(delta: float) -> void:
 		print("ON FLOOR RESET BONUS")
 		bonus_points = 0
 	
-	velocity = target_velocity
+	velocity = target_velocity 
 	
 	if is_on_floor() and Input.is_action_just_pressed("jump"):
 		target_velocity.y = jump_impulse
 	
-	
 	move_and_slide()
-		
+	$Pivot.rotation.x = PI / 6 * velocity.y / jump_impulse
 
 func die():
 	print("die!!!")
