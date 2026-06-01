@@ -4,6 +4,9 @@ extends Node
 @export var mob_corpse_scene: PackedScene
 @export var player_scene: PackedScene
 
+@onready var retry_screen: Node = $UserInterface/Retry
+@onready var retry_label: Label = $UserInterface/Retry/Label
+
 const PLAYER_SPAWN_POSITIONS := [
 	Vector3(-3, 0, 0),
 	Vector3(3, 0, 0),
@@ -15,6 +18,7 @@ const PLAYER_SPAWN_POSITIONS := [
 @onready var mobs_container: Node3D = $Mobs
 
 var _mob_counter := 0
+var _alive_player_ids := {}
 
 func _ready() -> void:
 	$UserInterface/Retry.hide()
@@ -52,6 +56,7 @@ func _spawn_players() -> void:
 func _spawn_player(peer_id: int, index: int) -> void:
 	if players_container.has_node(str(peer_id)):
 		return
+	_alive_player_ids[peer_id] = true
 	var player = player_scene.instantiate()
 	player.name = str(peer_id)
 	player.position = PLAYER_SPAWN_POSITIONS[index % PLAYER_SPAWN_POSITIONS.size()]
@@ -66,7 +71,7 @@ func _on_mob_timer_timeout() -> void:
 	var mob_spawn_location = get_node("SpawnPath/SpawnLocation")
 	mob_spawn_location.progress_ratio = randf()
 	
-	var spawn_position: Vector3 = mob_spawn_location.position
+	var spawn_position: Vector3 = mob_spawn_location.global_position
 	var target_position: Vector3 = _get_random_player_position()
 	var rotation_offset: float = randf_range(-PI / 4, PI / 4)
 	var speed_ratio: float = randf()
@@ -106,12 +111,47 @@ func _on_mob_squashed(_points, mob: CharacterBody3D) -> void:
 	add_child(mob_corpse)
 
 func _on_player_hit(player: Node) -> void:
-	var is_local := (not multiplayer.has_multiplayer_peer()) or (player.get_multiplayer_authority() == multiplayer.get_unique_id())
-	if is_local:
-		$UserInterface/Retry.show()
-	if not multiplayer.has_multiplayer_peer():
-		$MobTimer.stop()
+	# player.gd broadcasts death to every peer, so this runs everywhere. Only the
+	# server (or a solo game) tallies deaths; the fixed camera lets dead players
+	# spectate the survivors until the whole party is wiped out.
+	if (not multiplayer.has_multiplayer_peer()) or multiplayer.is_server():
+		_register_player_death(player.get_multiplayer_authority())
+
+func _register_player_death(peer_id: int) -> void:
+	_alive_player_ids.erase(peer_id)
+	if _alive_player_ids.is_empty():
+		_end_game()
+
+func _end_game() -> void:
+	$MobTimer.stop()
+	if multiplayer.has_multiplayer_peer():
+		show_game_over.rpc()
+	else:
+		show_game_over()
+
+@rpc("authority", "call_local", "reliable")
+func show_game_over() -> void:
+	if not multiplayer.has_multiplayer_peer() or multiplayer.is_server():
+		retry_label.text = "Press Space or Enter to retry"
+	else:
+		retry_label.text = "Waiting for noob host"
+	
+	retry_screen.show()
 	
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_accept") and $UserInterface/Retry.visible:
+	if not event.is_action_pressed("ui_accept"):
+		return
+	if not $UserInterface/Retry.visible:
+		return
+	# Only the host may retry; clients ignore the key and wait for the restart.
+	if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
+		return
+	if multiplayer.has_multiplayer_peer():
+		restart_game.rpc()
+	else:
 		get_tree().reload_current_scene()
+
+# Broadcast from the host so every peer reloads and the round starts again for all.
+@rpc("authority", "call_local", "reliable")
+func restart_game() -> void:
+	get_tree().reload_current_scene()

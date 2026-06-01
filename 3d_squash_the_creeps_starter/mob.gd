@@ -19,7 +19,6 @@ func initialize(start_position: Vector3, target_position: Vector3, rotation_offs
 func _physics_process(delta: float) -> void:
 	move_and_slide()
 
-
 func _on_visible_on_screen_notifier_3d_screen_exited() -> void:
 	queue_free()
 

@@ -9,6 +9,7 @@ signal hit
 
 var target_velocity = Vector3.ZERO
 var bonus_points = 0
+var _dead := false
 const PLAYER_ONE_COLOR := Color(0.95, 0.45, 0.1) # orange
 const PLAYER_TWO_COLOR := Color(0.2, 0.45, 1.0) # blue
 
@@ -136,11 +137,15 @@ func die():
 
 @rpc("authority", "call_local", "reliable")
 func _die() -> void:
-	print("die!!!")
+	if _dead:
+		return
+	_dead = true
 	hit.emit()
 	queue_free()
 
 func _on_mob_detector_body_entered(_body: Node3D) -> void:
 	if not _is_authority():
+		return
+	if _dead:
 		return
 	die()

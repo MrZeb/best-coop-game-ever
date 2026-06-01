@@ -52,16 +52,16 @@ mesh = SubResource("BoxMesh_ig7tw")
 transform = Transform3D(1, 0, 0, 0, -0.70710677, 0.70710677, 0, -0.70710677, -0.70710677, 0, 10, 0)
 shadow_enabled = true
 
-[node name="Players" type="Node3D" parent="."]
+[node name="Players" type="Node3D" parent="." unique_id=113435046]
 
-[node name="Mobs" type="Node3D" parent="."]
+[node name="Mobs" type="Node3D" parent="." unique_id=104097163]
 
 [node name="CameraPivot" type="Marker3D" parent="." unique_id=2131393962]
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot" unique_id=1405194290]
 transform = Transform3D(1, 0, 0, 0, 0.7071068, 0.7071068, 0, -0.7071068, 0.7071068, 0, 19.063545, 19.456242)
 projection = 1
-size = 19.0
+size = 38.879
 far = 100.0
 
 [node name="Cylinders" type="Node3D" parent="." unique_id=171948616]
@@ -88,10 +88,11 @@ mesh = SubResource("CylinderMesh_ig7tw")
 skeleton = NodePath("")
 
 [node name="SpawnPath" type="Path3D" parent="." unique_id=897872590]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
 curve = SubResource("Curve3D_1bvp3")
 
 [node name="SpawnLocation" type="PathFollow3D" parent="SpawnPath" unique_id=1391149800]
-transform = Transform3D(0.0052539557, 0, -0.9999849, 0, 1, 0, 0.9999849, 0, 0.0052539557, -16.366156, 0, -16.503643)
+transform = Transform3D(0.0052539525, 0, -0.99997765, 0, 0.99999255, 0, 0.9999843, 0, 0.0052539175, -16.366156, 0, -16.503643)
 
 [node name="MobTimer" type="Timer" parent="." unique_id=764269446]
 wait_time = 0.5
@@ -117,6 +118,7 @@ text = "Score: 0"
 script = ExtResource("5_7mycd")
 
 [node name="Retry" type="ColorRect" parent="UserInterface" unique_id=122359987]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
