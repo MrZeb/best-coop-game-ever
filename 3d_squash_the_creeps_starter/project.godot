@@ -16,13 +16,14 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="Squash the Creeps (3D)"
 config/description="In this game, your goal is to chase and kick out the creeps!"
-run/main_scene="uid://2wap0283yk0r"
+run/main_scene="uid://dw2soeh20ie4t"
 config/features=PackedStringArray("4.6")
 config/icon="res://icon.webp"
 
 [autoload]
 
 MusicPlayer="*uid://dwgxgvhij3gfx"
+Lobby="*uid://c4vv4si4t8cwh"
 
 [display]
 

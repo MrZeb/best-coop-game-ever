@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://dw2soeh20ie4t"]
+
+[ext_resource type="Script" uid="uid://cpxca0qwo8vra" path="res://lobby_menu.gd" id="1_nv5w8"]
+
+[node name="LobbyMenu" type="Control" unique_id=159619270]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_nv5w8")
+
+[node name="PlayerNameInput" type="LineEdit" parent="." unique_id=1931840097]
+layout_mode = 1
+offset_left = 263.0
+offset_top = 247.0
+offset_right = 331.5
+offset_bottom = 278.0
+text = "Player"
+
+[node name="ServerIpInput" type="LineEdit" parent="." unique_id=648567134]
+layout_mode = 0
+offset_left = 263.0
+offset_top = 346.0
+offset_right = 331.5
+offset_bottom = 377.0
+text = "127.0.0.1"
+
+[node name="HostButton" type="Button" parent="." unique_id=1928334323]
+layout_mode = 0
+offset_left = 345.0
+offset_top = 297.0
+offset_right = 389.0
+offset_bottom = 328.0
+text = "Host"
+
+[node name="JoinButton" type="Button" parent="." unique_id=532461288]
+layout_mode = 0
+offset_left = 345.0
+offset_top = 346.0
+offset_right = 383.0
+offset_bottom = 377.0
+text = "Join"
+
+[node name="StartButton" type="Button" parent="." unique_id=1953632782]
+layout_mode = 0
+offset_left = 263.0
+offset_top = 297.0
+offset_right = 309.0
+offset_bottom = 328.0
+text = "Start"
+
+[node name="PlayersList" type="ItemList" parent="." unique_id=105155942]
+layout_mode = 0
+offset_left = 429.0
+offset_top = 297.0
+offset_right = 645.0
+offset_bottom = 484.0
+
+[node name="StatusLabel" type="Label" parent="." unique_id=408669511]
+layout_mode = 0
+offset_left = 332.0
+offset_top = 149.0
+offset_right = 372.0
+offset_bottom = 172.0

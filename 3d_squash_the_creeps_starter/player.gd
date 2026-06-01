@@ -9,6 +9,62 @@ signal hit
 
 var target_velocity = Vector3.ZERO
 var bonus_points = 0
+const PLAYER_ONE_COLOR := Color(0.95, 0.45, 0.1) # orange
+const PLAYER_TWO_COLOR := Color(0.2, 0.45, 1.0) # blue
+
+func _ready() -> void:
+	_apply_player_color()
+
+func _apply_player_color() -> void:
+	var peer_id := multiplayer.get_unique_id()
+	var player_color := _get_player_color(peer_id)
+	_apply_color_to_meshes($Pivot/Character, player_color)
+
+func _get_player_color(peer_id: int) -> Color:
+	if Lobby != null and Lobby.players.size() > 0:
+		var peer_ids: Array = Lobby.players.keys()
+		peer_ids.sort()
+		var player_index := peer_ids.find(peer_id)
+		if player_index == 0:
+			return PLAYER_ONE_COLOR
+		if player_index == 1:
+			return PLAYER_TWO_COLOR
+	
+	if peer_id == 1:
+		return PLAYER_ONE_COLOR
+	return PLAYER_TWO_COLOR
+
+func _apply_color_to_meshes(node: Node, player_color: Color) -> void:
+	if node is MeshInstance3D:
+		_apply_color_to_mesh_instance(node, player_color)
+	
+	for child in node.get_children():
+		_apply_color_to_meshes(child, player_color)
+
+func _apply_color_to_mesh_instance(mesh_instance: MeshInstance3D, player_color: Color) -> void:
+	if mesh_instance.mesh == null:
+		return
+	
+	for surface_index in range(mesh_instance.mesh.get_surface_count()):
+		var source_material := mesh_instance.get_active_material(surface_index)
+		if not _is_player_body_material(source_material):
+			continue
+		
+		if source_material is BaseMaterial3D:
+			var duplicated_material := source_material.duplicate()
+			duplicated_material.albedo_color = player_color
+			mesh_instance.set_surface_override_material(surface_index, duplicated_material)
+		else:
+			var fallback_material := StandardMaterial3D.new()
+			fallback_material.albedo_color = player_color
+			mesh_instance.set_surface_override_material(surface_index, fallback_material)
+
+func _is_player_body_material(source_material: Material) -> bool:
+	if source_material == null:
+		return false
+	
+	var material_name := source_material.resource_name.to_lower()
+	return material_name.find("body") != -1
 
 func _physics_process(delta: float) -> void:
 	var direction = Vector3.ZERO
