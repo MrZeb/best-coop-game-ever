@@ -13,8 +13,13 @@ var _dead := false
 const PLAYER_ONE_COLOR := Color(0.95, 0.45, 0.1) # orange
 const PLAYER_TWO_COLOR := Color(0.2, 0.45, 1.0) # blue
 
+@onready var _camera := $Camera3D as Camera3D
+@onready var _camera_pivot := $CameraPivot as Node3D
+
 func _ready() -> void:
 	_apply_player_color()
+	if _is_authority():
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _is_authority() -> bool:
 	return not multiplayer.has_multiplayer_peer() or is_multiplayer_authority()
@@ -86,7 +91,7 @@ func _physics_process(delta: float) -> void:
 		direction.z -= 1
 	
 	if direction != Vector3.ZERO:
-		direction = direction.normalized()
+		direction = direction.rotated(Vector3.UP, _camera_pivot.rotation.y).normalized()
 		$Pivot.basis = Basis.looking_at(direction)
 		$AnimationPlayer.speed_scale = 4
 	else:
@@ -149,3 +154,14 @@ func _on_mob_detector_body_entered(_body: Node3D) -> void:
 	if _dead:
 		return
 	die()
+	
+@export_range(0.0, 1.0) var mouse_sensitivity = 0.01
+@export var tilt_limit = deg_to_rad(75)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		_camera_pivot.rotation.x -= event.screen_relative.y * mouse_sensitivity
+		_camera_pivot.rotation.x = clampf(_camera_pivot.rotation.x, -tilt_limit, tilt_limit)
+		_camera_pivot.rotation.y += -event.screen_relative.x * mouse_sensitivity
+	elif event.is_action_pressed("ui_cancel"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

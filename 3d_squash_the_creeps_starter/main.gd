@@ -132,26 +132,33 @@ func _end_game() -> void:
 @rpc("authority", "call_local", "reliable")
 func show_game_over() -> void:
 	if not multiplayer.has_multiplayer_peer() or multiplayer.is_server():
-		retry_label.text = "Press Space or Enter to retry"
+		retry_label.text = "Press any key to restart"
 	else:
 		retry_label.text = "Waiting for noob host"
 	
 	retry_screen.show()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
 func _unhandled_input(event: InputEvent) -> void:
-	if not event.is_action_pressed("ui_accept"):
-		return
-	if not $UserInterface/Retry.visible:
-		return
 	# Only the host may retry; clients ignore the key and wait for the restart.
 	if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
 		return
+		
+	if not $UserInterface/Retry.visible:
+		return
+		
+	if event is InputEventMouseMotion:
+		return
+	
+	restart_game()
+
+func restart_game() -> void:
 	if multiplayer.has_multiplayer_peer():
-		restart_game.rpc()
+		restart_game_multiplayer.rpc()
 	else:
 		get_tree().reload_current_scene()
 
 # Broadcast from the host so every peer reloads and the round starts again for all.
 @rpc("authority", "call_local", "reliable")
-func restart_game() -> void:
+func restart_game_multiplayer() -> void:
 	get_tree().reload_current_scene()

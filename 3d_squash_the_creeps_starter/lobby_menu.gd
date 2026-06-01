@@ -20,7 +20,7 @@ func _ready() -> void:
 	join_button.pressed.connect(_on_join_pressed)
 	start_button.pressed.connect(_on_start_pressed)
 	
-	start_button.disabled = true
+	start_button.disabled = false
 	server_ip_input.text = "127.0.0.1"
 	_refresh_players()
 
@@ -47,9 +47,9 @@ func _on_join_pressed() -> void:
 func _on_start_pressed() -> void:
 	if not multiplayer.is_server():
 		return
-	if Lobby.players.size() < 2:
-		status_label.text = "Need at least 2 players"
-		return
+	#if Lobby.players.size() < 2:
+		#status_label.text = "Need at least 2 players"
+		#return
 	Lobby.load_game.rpc(GAME_SCENE_PATH)
 	
 func _on_player_connected(_peer_id: int, _player_info: Dictionary) -> void:

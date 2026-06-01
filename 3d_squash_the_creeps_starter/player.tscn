@@ -80,6 +80,8 @@ properties/1/path = NodePath("Pivot:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_i3pqv"]
+
 [node name="Player" type="CharacterBody3D" unique_id=1432629476]
 collision_mask = 6
 script = ExtResource("1_onrkg")
@@ -106,7 +108,20 @@ shape = SubResource("CylinderShape3D_onrkg")
 libraries/ = SubResource("AnimationLibrary_hqtel")
 autoplay = &"float"
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1280678892]
 replication_config = SubResource("SceneReplicationConfig_sync")
+
+[node name="CameraPivot" type="Node3D" parent="." unique_id=555815948]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot" unique_id=906666309]
+collision_mask = 4
+shape = SubResource("SphereShape3D_i3pqv")
+spring_length = 6.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D" unique_id=1687641362]
+transform = Transform3D(1, 0, 0, 0, 0.9396926, 0.34202012, 0, -0.34202012, 0.9396926, 0, 0, 0)
+current = true
+near = 0.942
 
 [connection signal="body_entered" from="MobDetector" to="." method="_on_mob_detector_body_entered"]
