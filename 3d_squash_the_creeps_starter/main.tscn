@@ -6,7 +6,6 @@
 [ext_resource type="FontFile" uid="uid://cyxhh7ddkn62q" path="res://fonts/Montserrat-Medium.ttf" id="4_lquwl"]
 [ext_resource type="Script" uid="uid://bq4lq2wbf1rkc" path="res://score_label.gd" id="5_7mycd"]
 [ext_resource type="PackedScene" uid="uid://qhj0810tvtdf" path="res://mob_corpse.tscn" id="6_gdqdl"]
-[ext_resource type="PackedScene" uid="uid://b4a7i3kjvup0m" path="res://lobby.tscn" id="7_g1nqi"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7dm0k"]
 size = Vector3(60, 2, 60)
@@ -36,8 +35,7 @@ default_font_size = 22
 script = ExtResource("1_0xm2m")
 mob_scene = ExtResource("2_h2yge")
 mob_corpse_scene = ExtResource("6_gdqdl")
-
-[node name="Lobby" parent="." unique_id=1134208005 instance=ExtResource("7_g1nqi")]
+player_scene = ExtResource("1_ig7tw")
 
 [node name="Ground" type="StaticBody3D" parent="." unique_id=500150326]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
@@ -54,8 +52,9 @@ mesh = SubResource("BoxMesh_ig7tw")
 transform = Transform3D(1, 0, 0, 0, -0.70710677, 0.70710677, 0, -0.70710677, -0.70710677, 0, 10, 0)
 shadow_enabled = true
 
-[node name="Player" parent="." unique_id=1432629476 instance=ExtResource("1_ig7tw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
+[node name="Players" type="Node3D" parent="."]
+
+[node name="Mobs" type="Node3D" parent="."]
 
 [node name="CameraPivot" type="Marker3D" parent="." unique_id=2131393962]
 
@@ -141,5 +140,4 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Press Enter to retry"
 
-[connection signal="hit" from="Player" to="." method="_on_player_hit"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]

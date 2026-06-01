@@ -15,8 +15,11 @@ const PLAYER_TWO_COLOR := Color(0.2, 0.45, 1.0) # blue
 func _ready() -> void:
 	_apply_player_color()
 
+func _is_authority() -> bool:
+	return not multiplayer.has_multiplayer_peer() or is_multiplayer_authority()
+
 func _apply_player_color() -> void:
-	var peer_id := multiplayer.get_unique_id()
+	var peer_id := get_multiplayer_authority()
 	var player_color := _get_player_color(peer_id)
 	_apply_color_to_meshes($Pivot/Character, player_color)
 
@@ -67,6 +70,9 @@ func _is_player_body_material(source_material: Material) -> bool:
 	return material_name.find("body") != -1
 
 func _physics_process(delta: float) -> void:
+	if not _is_authority():
+		return
+	
 	var direction = Vector3.ZERO
 	
 	if Input.is_action_pressed("move_right"):
@@ -123,9 +129,18 @@ func _physics_process(delta: float) -> void:
 	$Pivot.rotation.x = PI / 6 * velocity.y / jump_impulse
 
 func die():
+	if multiplayer.has_multiplayer_peer():
+		_die.rpc()
+	else:
+		_die()
+
+@rpc("authority", "call_local", "reliable")
+func _die() -> void:
 	print("die!!!")
 	hit.emit()
 	queue_free()
 
-func _on_mob_detector_body_entered(body: Node3D) -> void:
+func _on_mob_detector_body_entered(_body: Node3D) -> void:
+	if not _is_authority():
+		return
 	die()
