@@ -10,8 +10,68 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_7dm0k"]
 size = Vector3(60, 2, 60)
 
-[sub_resource type="BoxMesh" id="BoxMesh_ig7tw"]
-size = Vector3(60, 2, 60)
+[sub_resource type="Gradient" id="Gradient_7mycd"]
+offsets = PackedFloat32Array(0.2, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_272bh"]
+noise_type = 2
+frequency = 0.03
+cellular_jitter = 3.0
+cellular_return_type = 0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 50.0
+domain_warp_fractal_type = 2
+domain_warp_fractal_lacunarity = 1.5
+domain_warp_fractal_gain = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5vw27"]
+noise = SubResource("FastNoiseLite_272bh")
+color_ramp = SubResource("Gradient_7mycd")
+seamless = true
+
+[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_kek77"]
+_shader_parameters = {
+&"bias_distance": null,
+&"blend_sharpness": null,
+&"depth_blur": null,
+&"enable_macro_variation": null,
+&"enable_projection": null,
+&"flat_terrain_normals": null,
+&"macro_variation1": null,
+&"macro_variation2": null,
+&"macro_variation_slope": null,
+&"mipmap_bias": null,
+&"noise1_angle": null,
+&"noise1_offset": null,
+&"noise1_scale": null,
+&"noise2_scale": null,
+&"noise_texture": SubResource("NoiseTexture2D_5vw27"),
+&"projection_threshold": null
+}
+show_checkered = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4c57u"]
+transparency = 4
+cull_mode = 2
+vertex_color_use_as_albedo = true
+backlight_enabled = true
+backlight = Color(0.5, 0.5, 0.5, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 128.0
+distance_fade_max_distance = 96.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_efxa6"]
+generated_type = 1
+height_offset = 0.5
+material_override = SubResource("StandardMaterial3D_4c57u")
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="Terrain3DAssets" id="Terrain3DAssets_dg77c"]
+mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_efxa6")])
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
 albedo_color = Color(0.9465299, 0.42044437, 0.17357126, 1)
@@ -45,8 +105,14 @@ collision_mask = 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1480759939]
 shape = SubResource("BoxShape3D_7dm0k")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=968175346]
-mesh = SubResource("BoxMesh_ig7tw")
+[node name="MeshInstance3D" type="Terrain3D" parent="Ground" unique_id=1994871029]
+data_directory = "res://data/"
+material = SubResource("Terrain3DMaterial_kek77")
+assets = SubResource("Terrain3DAssets_dg77c")
+show_checkered = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+top_level = true
+metadata/_edit_lock_ = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=876661800]
 transform = Transform3D(1, 0, 0, 0, -0.70710677, 0.70710677, 0, -0.70710677, -0.70710677, 0, 10, 0)
@@ -93,7 +159,7 @@ transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
 curve = SubResource("Curve3D_1bvp3")
 
 [node name="SpawnLocation" type="PathFollow3D" parent="SpawnPath" unique_id=1391149800]
-transform = Transform3D(0.00525395, 0, -0.9999772, 0, 0.99999255, 0, 0.99998385, 0, 0.0052539147, -16.366156, 0, -16.503643)
+transform = Transform3D(0.005253949, 0, -0.99997705, 0, 0.99999255, 0, 0.9999837, 0, 0.0052539143, -16.366156, 0, -16.503643)
 
 [node name="MobTimer" type="Timer" parent="." unique_id=764269446]
 wait_time = 0.5
