@@ -6,6 +6,7 @@ extends Node
 
 @onready var retry_screen: Node = $UserInterface/Retry
 @onready var retry_label: Label = $UserInterface/Retry/Label
+@onready var terrain: Terrain3D = $Terrain3D
 
 const PLAYER_SPAWN_POSITIONS := [
 	Vector3(-3, 0, 0),
@@ -43,6 +44,28 @@ func start_game() -> void:
 		if $MobTimer.is_stopped():
 			$MobTimer.start()
 
+func _get_grounded_position(position: Vector3) -> Vector3:
+	var grounded := position
+
+	if terrain != null:
+		var height := terrain.data.get_height(position)
+		if not is_nan(height):
+			grounded.y = height
+			return grounded
+
+	# Fallback: raycast downward if Terrain3D has no height there
+	var space_state := get_viewport().world_3d.direct_space_state
+	var query := PhysicsRayQueryParameters3D.create(
+		position + Vector3.UP * 100.0,
+		position + Vector3.DOWN * 1000.0
+	)
+
+	var result := space_state.intersect_ray(query)
+	if result.has("position"):
+		grounded.y = result.position.y
+
+	return grounded
+	
 func _spawn_players() -> void:
 	var peer_ids: Array = []
 	if multiplayer.has_multiplayer_peer() and Lobby.players.size() > 0:
@@ -59,7 +82,9 @@ func _spawn_player(peer_id: int, index: int) -> void:
 	_alive_player_ids[peer_id] = true
 	var player = player_scene.instantiate()
 	player.name = str(peer_id)
-	player.position = PLAYER_SPAWN_POSITIONS[index % PLAYER_SPAWN_POSITIONS.size()]
+	player.position = _get_grounded_position(
+		PLAYER_SPAWN_POSITIONS[index % PLAYER_SPAWN_POSITIONS.size()]
+	)
 	player.set_multiplayer_authority(peer_id)
 	player.hit.connect(_on_player_hit.bind(player))
 	players_container.add_child(player)
@@ -71,7 +96,7 @@ func _on_mob_timer_timeout() -> void:
 	var mob_spawn_location = get_node("SpawnPath/SpawnLocation")
 	mob_spawn_location.progress_ratio = randf()
 	
-	var spawn_position: Vector3 = mob_spawn_location.global_position
+	var spawn_position: Vector3 = _get_grounded_position(mob_spawn_location.global_position)
 	var target_position: Vector3 = _get_random_player_position()
 	var rotation_offset: float = randf_range(-PI / 4, PI / 4)
 	var speed_ratio: float = randf()

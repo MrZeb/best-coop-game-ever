@@ -6,9 +6,32 @@
 [ext_resource type="FontFile" uid="uid://cyxhh7ddkn62q" path="res://fonts/Montserrat-Medium.ttf" id="4_lquwl"]
 [ext_resource type="Script" uid="uid://bq4lq2wbf1rkc" path="res://score_label.gd" id="5_7mycd"]
 [ext_resource type="PackedScene" uid="uid://qhj0810tvtdf" path="res://mob_corpse.tscn" id="6_gdqdl"]
+[ext_resource type="Texture2D" uid="uid://7x7w8hqxpbvw" path="res://assets/textures/Leafy Grass/1k/textures/leafy_grass_diff_1k.png" id="7_5vw27"]
+[ext_resource type="Texture2D" uid="uid://cnma7rei4i674" path="res://assets/textures/Leafy Grass/1k/textures/leafy_grass_nor_gl_1k.png" id="8_kek77"]
+[ext_resource type="Texture2D" uid="uid://cx3ktswu04yto" path="res://assets/textures/Dirt/1k/textures/dirt_diff_1k.png" id="9_dg77c"]
+[ext_resource type="Texture2D" uid="uid://ggtb5k0g4elv" path="res://assets/textures/Dirt/1k/textures/dirt_nor_gl_1k.png" id="10_ycdy4"]
+[ext_resource type="Texture2D" uid="uid://skjc5uqrp5vv" path="res://assets/textures/Rocky Terrain/1k/textures/rocky_terrain_diff_1k.png" id="11_w48qg"]
+[ext_resource type="Texture2D" uid="uid://bc36dv8h72p20" path="res://assets/textures/Rocky Terrain/1k/textures/rocky_terrain_nor_gl_1k.png" id="12_vivmo"]
+[ext_resource type="Texture2D" uid="uid://colkns0xktmsl" path="res://assets/textures/Sandstone Cracks/1k/textures/sandstone_cracks_diff_1k.png" id="13_w48qg"]
+[ext_resource type="Texture2D" uid="uid://ck838obyo7i24" path="res://assets/textures/Sandstone Cracks/1k/textures/sandstone_cracks_nor_gl_1k.png" id="14_vivmo"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_7dm0k"]
-size = Vector3(60, 2, 60)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
+albedo_color = Color(0.9465299, 0.42044437, 0.17357126, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ig7tw"]
+material = SubResource("StandardMaterial3D_h2yge")
+
+[sub_resource type="Curve3D" id="Curve3D_1bvp3"]
+closed = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -16.366156, 0, -16.503643, 0, 0, 0, 0, 0, 0, 16.58935, 0, -16.67679, 0, 0, 0, 0, 0, 0, 16.58935, 0, 16.45186, 0, 0, 0, 0, 0, 0, -16.5393, 0, 16.45186),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="Theme" id="Theme_272bh"]
+default_font = ExtResource("4_lquwl")
+default_font_size = 22
 
 [sub_resource type="Gradient" id="Gradient_7mycd"]
 offsets = PackedFloat32Array(0.2, 1)
@@ -33,6 +56,10 @@ seamless = true
 
 [sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_kek77"]
 _shader_parameters = {
+&"auto_base_texture": null,
+&"auto_height_reduction": null,
+&"auto_overlay_texture": null,
+&"auto_slope": null,
 &"bias_distance": null,
 &"blend_sharpness": null,
 &"depth_blur": null,
@@ -50,7 +77,7 @@ _shader_parameters = {
 &"noise_texture": SubResource("NoiseTexture2D_5vw27"),
 &"projection_threshold": null
 }
-show_checkered = true
+auto_shader = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4c57u"]
 transparency = 4
@@ -70,26 +97,39 @@ last_lod = 0
 last_shadow_lod = 0
 lod0_range = 128.0
 
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_4c57u"]
+name = "grass"
+albedo_texture = ExtResource("7_5vw27")
+normal_texture = ExtResource("8_kek77")
+roughness = 0.222
+uv_scale = 0.2
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_efxa6"]
+name = "dirt"
+id = 1
+albedo_texture = ExtResource("9_dg77c")
+normal_texture = ExtResource("10_ycdy4")
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_2cqfq"]
+name = "rock"
+id = 2
+albedo_texture = ExtResource("11_w48qg")
+normal_texture = ExtResource("12_vivmo")
+roughness = 0.17
+uv_scale = 0.211
+detiling_rotation = 0.105
+detiling_shift = 0.038
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_yaehf"]
+name = ""
+id = 3
+albedo_texture = ExtResource("13_w48qg")
+normal_texture = ExtResource("14_vivmo")
+uv_scale = 0.451
+
 [sub_resource type="Terrain3DAssets" id="Terrain3DAssets_dg77c"]
 mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_efxa6")])
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
-albedo_color = Color(0.9465299, 0.42044437, 0.17357126, 1)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_ig7tw"]
-material = SubResource("StandardMaterial3D_h2yge")
-
-[sub_resource type="Curve3D" id="Curve3D_1bvp3"]
-closed = true
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -16.366156, 0, -16.503643, 0, 0, 0, 0, 0, 0, 16.58935, 0, -16.67679, 0, 0, 0, 0, 0, 0, 16.58935, 0, 16.45186, 0, 0, 0, 0, 0, 0, -16.5393, 0, 16.45186),
-"tilts": PackedFloat32Array(0, 0, 0, 0)
-}
-point_count = 4
-
-[sub_resource type="Theme" id="Theme_272bh"]
-default_font = ExtResource("4_lquwl")
-default_font_size = 22
+texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_4c57u"), SubResource("Terrain3DTextureAsset_efxa6"), SubResource("Terrain3DTextureAsset_2cqfq"), SubResource("Terrain3DTextureAsset_yaehf")])
 
 [node name="Main" type="Node" unique_id=1013623999]
 script = ExtResource("1_0xm2m")
@@ -97,28 +137,12 @@ mob_scene = ExtResource("2_h2yge")
 mob_corpse_scene = ExtResource("6_gdqdl")
 player_scene = ExtResource("1_ig7tw")
 
-[node name="Ground" type="StaticBody3D" parent="." unique_id=500150326]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
-collision_layer = 4
-collision_mask = 0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1480759939]
-shape = SubResource("BoxShape3D_7dm0k")
-
-[node name="MeshInstance3D" type="Terrain3D" parent="Ground" unique_id=1994871029]
-data_directory = "res://data/"
-material = SubResource("Terrain3DMaterial_kek77")
-assets = SubResource("Terrain3DAssets_dg77c")
-show_checkered = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
-top_level = true
-metadata/_edit_lock_ = true
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=876661800]
 transform = Transform3D(1, 0, 0, 0, -0.70710677, 0.70710677, 0, -0.70710677, -0.70710677, 0, 10, 0)
 shadow_enabled = true
 
 [node name="Players" type="Node3D" parent="." unique_id=113435046]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
 
 [node name="Mobs" type="Node3D" parent="." unique_id=104097163]
 
@@ -159,7 +183,7 @@ transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
 curve = SubResource("Curve3D_1bvp3")
 
 [node name="SpawnLocation" type="PathFollow3D" parent="SpawnPath" unique_id=1391149800]
-transform = Transform3D(0.005253949, 0, -0.99997705, 0, 0.99999255, 0, 0.9999837, 0, 0.0052539143, -16.366156, 0, -16.503643)
+transform = Transform3D(0.0052539473, 0, -0.99997663, 0, 0.99999255, 0, 0.9999833, 0, 0.005253912, -16.366156, 0, -16.503643)
 
 [node name="MobTimer" type="Timer" parent="." unique_id=764269446]
 wait_time = 0.5
@@ -210,5 +234,13 @@ offset_bottom = 14.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Press Enter to retry"
+
+[node name="Terrain3D" type="Terrain3D" parent="." unique_id=1994871029]
+data_directory = "res://data/"
+material = SubResource("Terrain3DMaterial_kek77")
+assets = SubResource("Terrain3DAssets_dg77c")
+collision_layer = 8
+top_level = true
+metadata/_edit_lock_ = true
 
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]

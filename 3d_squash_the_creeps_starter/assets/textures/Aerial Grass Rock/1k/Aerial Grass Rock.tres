@@ -1,0 +1,18 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://c5iq6pm6pjmyy"]
+
+[ext_resource type="Texture2D" uid="uid://yj37vdepfqls" path="res://assets/textures/Aerial Grass Rock/1k/textures/aerial_grass_rock_diff_1k.png" id="1_gvhmd"]
+[ext_resource type="Texture2D" uid="uid://dugejuwvbrxkn" path="res://assets/textures/Aerial Grass Rock/1k/textures/aerial_grass_rock_ao_1k.png" id="2_r2a0a"]
+[ext_resource type="Texture2D" uid="uid://4g3kvodyllaq" path="res://assets/textures/Aerial Grass Rock/1k/textures/aerial_grass_rock_disp_1k.png" id="3_4sbud"]
+[ext_resource type="Texture2D" uid="uid://dr3g5q87cnorc" path="res://assets/textures/Aerial Grass Rock/1k/textures/aerial_grass_rock_nor_gl_1k.png" id="4_ioplr"]
+[ext_resource type="Texture2D" uid="uid://bf85fpbismsxt" path="res://assets/textures/Aerial Grass Rock/1k/textures/aerial_grass_rock_rough_1k.png" id="5_tv7hu"]
+
+[resource]
+albedo_texture = ExtResource("1_gvhmd")
+roughness_texture = ExtResource("5_tv7hu")
+normal_enabled = true
+normal_texture = ExtResource("4_ioplr")
+ao_enabled = true
+ao_texture = ExtResource("2_r2a0a")
+heightmap_enabled = true
+heightmap_texture = ExtResource("3_4sbud")
+heightmap_flip_texture = true

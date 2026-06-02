@@ -1,0 +1,18 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b0865i2u8klme"]
+
+[ext_resource type="Texture2D" uid="uid://cx3ktswu04yto" path="res://assets/textures/Dirt/1k/textures/dirt_diff_1k.png" id="1_uic38"]
+[ext_resource type="Texture2D" uid="uid://buxcru2j2fl7d" path="res://assets/textures/Dirt/1k/textures/dirt_ao_1k.png" id="2_4cyku"]
+[ext_resource type="Texture2D" uid="uid://b4xkspbjmc7cf" path="res://assets/textures/Dirt/1k/textures/dirt_disp_1k.png" id="3_egmii"]
+[ext_resource type="Texture2D" uid="uid://ggtb5k0g4elv" path="res://assets/textures/Dirt/1k/textures/dirt_nor_gl_1k.png" id="4_80x7n"]
+[ext_resource type="Texture2D" uid="uid://sevw3s5e6xa1" path="res://assets/textures/Dirt/1k/textures/dirt_rough_1k.png" id="5_ea6tj"]
+
+[resource]
+albedo_texture = ExtResource("1_uic38")
+roughness_texture = ExtResource("5_ea6tj")
+normal_enabled = true
+normal_texture = ExtResource("4_80x7n")
+ao_enabled = true
+ao_texture = ExtResource("2_4cyku")
+heightmap_enabled = true
+heightmap_texture = ExtResource("3_egmii")
+heightmap_flip_texture = true
