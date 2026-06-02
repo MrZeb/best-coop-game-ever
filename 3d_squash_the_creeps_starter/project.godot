@@ -30,7 +30,6 @@ Lobby="*uid://c4vv4si4t8cwh"
 window/size/viewport_width=1440
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
 
 [filesystem]
 
