@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://bc36dv8h72p20" path="res://assets/textures/Rocky Terrain/1k/textures/rocky_terrain_nor_gl_1k.png" id="12_vivmo"]
 [ext_resource type="Texture2D" uid="uid://colkns0xktmsl" path="res://assets/textures/Sandstone Cracks/1k/textures/sandstone_cracks_diff_1k.png" id="13_w48qg"]
 [ext_resource type="Texture2D" uid="uid://ck838obyo7i24" path="res://assets/textures/Sandstone Cracks/1k/textures/sandstone_cracks_nor_gl_1k.png" id="14_vivmo"]
+[ext_resource type="PackedScene" uid="uid://be6nrf0b8j4l0" path="res://demo/assets/models/RockA.tscn" id="15_vivmo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
 albedo_color = Color(0.9465299, 0.42044437, 0.17357126, 1)
@@ -90,9 +91,50 @@ distance_fade_min_distance = 128.0
 distance_fade_max_distance = 96.0
 
 [sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_efxa6"]
+name = "Tree"
 generated_type = 1
 height_offset = 0.5
 material_override = SubResource("StandardMaterial3D_4c57u")
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w48qg"]
+transparency = 4
+cull_mode = 2
+vertex_color_use_as_albedo = true
+backlight_enabled = true
+backlight = Color(0.5, 0.5, 0.5, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 128.0
+distance_fade_max_distance = 96.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_vivmo"]
+name = "Rock"
+id = 1
+generated_type = 1
+height_offset = 0.5
+material_override = SubResource("StandardMaterial3D_w48qg")
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2cqfq"]
+transparency = 4
+cull_mode = 2
+vertex_color_use_as_albedo = true
+backlight_enabled = true
+backlight = Color(0.5, 0.5, 0.5, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 128.0
+distance_fade_max_distance = 96.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_yaehf"]
+name = "Bush"
+id = 2
+generated_type = 1
+height_offset = 0.5
+material_override = SubResource("StandardMaterial3D_2cqfq")
 last_lod = 0
 last_shadow_lod = 0
 lod0_range = 128.0
@@ -128,7 +170,7 @@ normal_texture = ExtResource("14_vivmo")
 uv_scale = 0.451
 
 [sub_resource type="Terrain3DAssets" id="Terrain3DAssets_dg77c"]
-mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_efxa6")])
+mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_efxa6"), SubResource("Terrain3DMeshAsset_vivmo"), SubResource("Terrain3DMeshAsset_yaehf")])
 texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_4c57u"), SubResource("Terrain3DTextureAsset_efxa6"), SubResource("Terrain3DTextureAsset_2cqfq"), SubResource("Terrain3DTextureAsset_yaehf")])
 
 [node name="Main" type="Node" unique_id=1013623999]
@@ -183,7 +225,7 @@ transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
 curve = SubResource("Curve3D_1bvp3")
 
 [node name="SpawnLocation" type="PathFollow3D" parent="SpawnPath" unique_id=1391149800]
-transform = Transform3D(0.0052539473, 0, -0.99997663, 0, 0.99999255, 0, 0.9999833, 0, 0.005253912, -16.366156, 0, -16.503643)
+transform = Transform3D(0.0052539455, 0, -0.9999763, 0, 0.99999255, 0, 0.99998295, 0, 0.00525391, -16.366156, 0, -16.503643)
 
 [node name="MobTimer" type="Timer" parent="." unique_id=764269446]
 wait_time = 0.5
@@ -242,5 +284,8 @@ assets = SubResource("Terrain3DAssets_dg77c")
 collision_layer = 8
 top_level = true
 metadata/_edit_lock_ = true
+
+[node name="RockA" parent="Terrain3D" unique_id=1076960545 instance=ExtResource("15_vivmo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2, -14)
 
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]

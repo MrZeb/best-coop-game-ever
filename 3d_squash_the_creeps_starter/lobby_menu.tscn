@@ -1,6 +1,16 @@
 [gd_scene format=3 uid="uid://dw2soeh20ie4t"]
 
 [ext_resource type="Script" uid="uid://cpxca0qwo8vra" path="res://lobby_menu.gd" id="1_nv5w8"]
+[ext_resource type="StyleBox" uid="uid://crwat00wopb3w" path="res://art/styles/new_style_box_flat.tres" id="2_iohss"]
+
+[sub_resource type="Theme" id="Theme_nv5w8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eicbr"]
+bg_color = Color(0.972549, 0.7607843, 0.38431373, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
 
 [node name="LobbyMenu" type="Control" unique_id=159619270]
 layout_mode = 3
@@ -22,14 +32,6 @@ offset_top = 346.0
 offset_right = 331.5
 offset_bottom = 377.0
 text = "127.0.0.1"
-
-[node name="HostButton" type="Button" parent="." unique_id=1928334323]
-layout_mode = 0
-offset_left = 345.0
-offset_top = 297.0
-offset_right = 389.0
-offset_bottom = 328.0
-text = "Host"
 
 [node name="JoinButton" type="Button" parent="." unique_id=532461288]
 layout_mode = 0
@@ -60,3 +62,15 @@ offset_left = 332.0
 offset_top = 149.0
 offset_right = 372.0
 offset_bottom = 172.0
+
+[node name="HostButton" type="Button" parent="." unique_id=1928334323]
+layout_mode = 0
+offset_left = 345.0
+offset_top = 289.0
+offset_right = 405.0
+offset_bottom = 320.0
+theme = SubResource("Theme_nv5w8")
+theme_override_colors/font_color = Color(0.43529412, 0.23921569, 0.07058824, 1)
+theme_override_styles/normal = ExtResource("2_iohss")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_eicbr")
+text = "Host"
